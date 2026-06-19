@@ -1,0 +1,118 @@
+<?php
+ob_start();
+include("../_init.php");
+
+// Redirect, If user is not logged in
+if (!is_loggedin()) {
+    redirect(root_url() . '/index.php');
+}
+
+// Redirect, If User has not Read Permission
+if (user_group_id() != 1 && !has_permission(1, 'read_parameter')) {
+    redirect(root_url() . '/'.APPDIRNAME.'/dashboard.php');
+}
+
+// Set Document Title
+$document->setTitle("Parameter");
+// ADD BODY CLASS
+$document->setBodyClass('');
+
+// Add Script and Style
+$document->addScript('../assets/app/js/Controller/ParameterController.js?v=1');
+
+// Include Header and Footer
+include realpath(__DIR__ . '/../') . '/_inc/template/partial/header.php';
+include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
+
+?>
+
+<style>
+#list {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#list_wrapper {
+  display: table-row;
+}
+
+#list th,
+#list td {
+  vertical-align: middle;
+}
+
+.dataTables_scrollBody {
+  display: table;
+}
+
+</style>
+
+<!-- Content Wrapper Start -->
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Parameter</h1>
+                </div>
+                <div class="col-sm-6">
+                    <?php if (user_group_id() == 1 || has_permission(1, 'create_role')) : ?>
+                        <div class="float-right">
+                            <button class="btn btn-sm btn-info create-new" style="display: inline-block;"><span class="fa fa-plus"></span> Create New</button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Content Start -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header m-1 p-1">
+                        <h3 class="card-title">
+                            <b>Parameter(s) List</b>
+                        </h3>
+                        <!--card Tools End-->
+                        <div class="card-tools pull-right">
+                            <input type="text" class="form-control" style="display: inline-block;" id="search-input" placeholder="Search.. (Any Parameter)">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            $hide_colums = "";
+                            if (user_group_id() != 1 && !has_permission(1, 'modify_parameter')) {
+                                $hide_colums .= "3,";
+                            }
+                        ?>
+
+                        <!-- List Start -->
+                        <table id="list" class="table dataTable table-bordered table-striped table-hover table-sm" data-hide-colums="<?php echo $hide_colums ?>"
+                            style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <!-- List End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Content End -->
+
+</div>
+<!-- Content Wrapper End -->
+<?php include realpath(__DIR__ . '/../') . '/_inc/template/partial/footer.php'; ?>

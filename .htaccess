@@ -1,0 +1,45 @@
+# All configuration in .htaccess (no httpd.conf changes required)
+
+# Enable rewrite engine
+
+RewriteEngine On
+RewriteBase /
+
+# Block direct access to sensitive directories
+
+RewriteRule ^(cache|tmp|db|conf|php|logs|vendor|tests|scripts)/ - [F,L]
+
+# Block access to sensitive files
+
+<FilesMatch "^(composer\.(json|lock)|phpunit\.xml|\.env|\.git.*|.*\.md)$">
+    Require all denied
+</FilesMatch>
+
+# Remove specific headers that reveal server information
+<IfModule mod_headers.c>
+    # Remove X-Powered-By header
+    Header unset X-Powered-By
+
+    # Remove server information from headers
+    Header always unset Server
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Disable directory listing
+
+Options -Indexes
+
+# Protect against certain attacks
+
+<IfModule mod_rewrite.c>
+    # Block suspicious query strings
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>

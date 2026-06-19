@@ -1,0 +1,42 @@
+# Local environment configuration
+config.php
+.env
+.env.*
+!.env.example
+
+# Runtime logs, cache, backups, and generated files
+errors.log
+app/errors.log
+storage/logs/*
+!storage/logs/.gitkeep
+storage/backups/*
+!storage/backups/.gitkeep
+*.log
+*.cache
+
+# Uploaded/generated documents
+uploads/
+storage/uploads/
+storage/tmp/
+storage/temp/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency/build folders if introduced later
+/vendor/
+/node_modules/
+/dist/
+/build/
+
+# Test and tool caches
+.phpunit.result.cache
+.php-cs-fixer.cache
+.eslintcache
+coverage/
