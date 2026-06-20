@@ -25,7 +25,6 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/header.php';
 include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
 
 // LOAD MODEL 
-$fieldmodel = registry()->get('loader')->model('field');
 $imodel = registry()->get('loader')->model('indexing');
 
 $pdfrow = $imodel->getpdfforindexing(); ?>
