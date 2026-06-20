@@ -8,7 +8,7 @@ if (!is_loggedin()) {
 }
 
 // Redirect, If User has not Read Permission
-if (user_group_id() != 1 && !has_permission(1, 'read_field')) {
+if (user_role_id() != 1 && !has_permission(1, 'read_field')) {
     redirect(root_url() . '/'.APPDIRNAME.'/dashboard.php');
 }
 
@@ -37,7 +37,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                     <!-- <h1 class="m-0">Rack</h1> -->
                 </div>
                 <div class="col-sm-6">
-                <?php if (user_group_id() == 1 || has_permission(1, 'create_field')) : ?>
+                <?php if (user_role_id() == 1 || has_permission(1, 'create_field')) : ?>
                     <div class="float-right">
                         <button class="btn btn-sm btn-info create-new" style="display: inline-block;"><span class="fa fa-plus"></span> Create New</button>
                     </div>
@@ -66,7 +66,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                     <div class="card-body">
                         <?php
                             $hide_colums = "";
-                            if (user_group_id() != 1 && !has_permission(1, 'modify_field')) {
+                            if (user_role_id() != 1 && !has_permission(1, 'modify_field')) {
                                 $hide_colums .= "6,";
                             }
                         ?>

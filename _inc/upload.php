@@ -264,7 +264,7 @@ $columns = array(
     'dt' => 'btn_edit',
     'formatter' => function ($d, $row) {
       $menu = "<button class=\"btn shadow btn-sm py-0 px-2 view-pdf\"><i class=\"fas fa-file-pdf\" style=\"font-size:18px;color:red\"></i> </button>";
-      if ($row['Status'] != "Indexed" || user_group_id() == 1 || has_permission(1, 'delete_pdf')) {
+      if ($row['Status'] != "Indexed" || user_role_id() == 1 || has_permission(1, 'delete_pdf')) {
         $menu .= "<button class=\"btn btn-sm py-0 px-2  delete-pdf\"><i class=\"fas fa-trash\" style=\"font-size:18px;\"></i> </button>";
       }
       return $menu;

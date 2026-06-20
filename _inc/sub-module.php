@@ -64,7 +64,7 @@ if ($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action
   try {
 
     // Check create permission
-    // if (user_group_id() != 1 && !has_permission('access', 'create_usergroup')) {
+    // if (user_role_id() != 1 && !has_permission('access', 'create_usergroup')) {
     //   throw new Exception("Error Read Permission");
     // }
 
@@ -95,7 +95,7 @@ if($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action_
   try {
 
     // Check update permission
-    // if (user_group_id() != 1 && !has_permission('access', 'update_usergroup')) {
+    // if (user_role_id() != 1 && !has_permission('access', 'update_usergroup')) {
     //   throw new Exception("Error Update Permission");
     // }
 
@@ -204,6 +204,7 @@ $columns = array(
       };
     }
   ),
+  array('db' => 'Sort','dt' => 'Sort' ),
   array( 
     'db' => 'Active',   
     'dt' => 'Active' ,

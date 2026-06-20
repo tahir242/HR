@@ -124,7 +124,7 @@ if ($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action
   try {
 
     // Check update permission
-    // if (user_group_id() != 1 && !has_permission('access', 'update_usergroup')) {
+    // if (user_role_id() != 1 && !has_permission('access', 'update_usergroup')) {
     //   throw new Exception("Error Update Permission");
     // }
 

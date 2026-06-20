@@ -32,7 +32,7 @@ docReady(function () {
         "columnDefs": [
             { "targets": [7], "orderable": false },
             { "visible": false, "targets": hideColumnsArray },
-            { "className": "text-center", "targets": [0, 1, 2, 3, 4, 5, 6,7] },
+            { "className": "text-center", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8] },
             {
                 "targets": [0],
                 'createdCell': function (td, cellData, rowData, row, col) {
@@ -81,6 +81,12 @@ docReady(function () {
                     $(td).attr('data-title', $("#list thead tr th:eq(7)").html());
                 }
             },
+            {
+                "targets": [8],
+                'createdCell': function (td, cellData, rowData, row, col) {
+                    $(td).attr('data-title', $("#list thead tr th:eq(8)").html());
+                }
+            },
         ],
         "aoColumns": [
             { data: "Sub_Module_URN" },
@@ -89,6 +95,7 @@ docReady(function () {
             { data: "Sub_Module" },
             { data: "Show_In_Menu" },
             { data: "Permission" },
+            { data: "Sort" },
             { data: "Active" },
             { data: "btn_edit" }
         ],

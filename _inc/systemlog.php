@@ -13,7 +13,7 @@ if (!is_loggedin()) {
 
 // Check, if user has reading permission or not
 // If user have not reading permission return an alert message
-if (user_group_id() != 1 && !has_permission(1, 'read_time_log')) {
+if (user_role_id() != 1 && !has_permission(1, 'read_time_log')) {
   header('HTTP/1.1 422 Unprocessable Entity');
   header('Content-Type: application/json; charset=UTF-8');
   echo json_encode(array('errorMsg' => "Error Read Permission"));

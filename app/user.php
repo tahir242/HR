@@ -8,7 +8,7 @@ if (!is_loggedin()) {
 }
 
 // Redirect, If User has not Read Permission
-if (user_group_id() != 1 && !has_permission(1, 'read_user')) {
+if (user_role_id() != 1 && !has_permission(1, 'read_user')) {
     redirect(root_url() . '/'.APPDIRNAME.'/dashboard.php');
 }
 
@@ -64,7 +64,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                     <div class="card-body">
                         <?php
                             $hide_colums = "";
-                            if (user_group_id() != 1 && !has_permission(1, 'view_profile')) {
+                            if (user_role_id() != 1 && !has_permission(1, 'view_profile')) {
                                 $hide_colums .= "8,";
                             }
                         ?>

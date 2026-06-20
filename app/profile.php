@@ -93,21 +93,21 @@ if(isset($request->post['UserID']) && $request->post['UserID'] !== ""){
                                         <b><i class="fas fa-user mr-1"></i> Account Information</b>
                                     </a>
                                 </li>
-                                <?php if (user_group_id() == 1 || has_permission(1, 'change_password')) : ?>
+                                <?php if (user_role_id() == 1 || has_permission(1, 'change_password')) : ?>
                                 <li class="nav-item">
                                     <a href="javascript:void(0);" class="nav-link action" data-action="CHANGEPASSWORDFORM">
                                         <b><i class="fas fa-key mr-1"></i> Change Password</b>
                                     </a>
                                 </li>
                                 <?php endif; ?>
-                                <?php if (user_group_id() == 1 || has_permission(1, 'change_role')) : ?>
+                                <?php if (user_role_id() == 1 || has_permission(1, 'change_role')) : ?>
                                 <li class="nav-item">
                                     <a href="javascript:void(0);" class="nav-link action" data-action="CHANGEROLEFORM" id="sr">
                                         <b><i class="fas fa-user-group mr-1"></i> Role</b>
                                     </a>
                                 </li>
                                 <?php endif; ?>
-                                <?php if (user_group_id() == 1 || has_permission(1, 'change_permission')) : ?>
+                                <?php if (user_role_id() == 1 || has_permission(1, 'change_permission')) : ?>
                                 <li class="nav-item">
                                     <a href="javascript:void(0);" class="nav-link action" data-action="CHANGEUSERPERMISSION" id="up">
                                         <b><i class="fa-solid fa-address-card mr-1"></i> Permission(s)</b>

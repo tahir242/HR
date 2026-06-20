@@ -1,6 +1,7 @@
 <?php 
+declare(strict_types=1);
 
-function get_submodules($data = array()){
+function get_submodules(array $data = array()) : ?array {
 
     $module_model = registry()->get('loader')->model('submodule');
 	$modules = $module_model->getSubModules($data);
@@ -8,13 +9,13 @@ function get_submodules($data = array()){
 
 }
 
-function count_submodules_by_module_id($ModuleID){
+function count_submodules_by_module_id(string $ModuleID) : int {
 	$module_model = registry()->get('loader')->model('submodule');
-	$modules = $module_model->coundSubModuleByModuleID($ModuleID);
+	$modules = $module_model->countSubModuleByModuleID($ModuleID);
 	return $modules->total;
 }
 
-function get_the_submodule($SubModuleID, $field = null) 
+function get_the_submodule(string $SubModuleID, ?string $field = null) : object|string|bool|null
 {
 	$submodule_model = registry()->get('loader')->model('submodule');
 	$row = $submodule_model->getSubModuleBySubModuleID($SubModuleID);

@@ -28,7 +28,7 @@
             $data = array(
               "filter_module" => $module->Module_ID,
               "filter_menu" => 1,
-              "sort" => "SubModule"
+              "sort" => "Sort"
             );
             $submodules = get_submodules($data);
             foreach ($submodules as $submodule): ?>
@@ -39,13 +39,13 @@
               );
               $permissions = get_permissions($data) ?>
               <?php foreach ($permissions as $permission): ?>
-                <?php if (user_group_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
+                <?php if (user_role_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
 
 
                   <li class="nav-item <?php
                   $data = array(
                     "filter_module" => $module->Module_ID,
-                    "sort" => "SubModule"
+                    "sort" => "Sort"
                   );
                   $submodules = get_submodules($data);
                   foreach ($submodules as $submodule) {
@@ -54,8 +54,8 @@
                   ?>">
                     <a href="<?php echo $module->Url !== NULL ? $module->Url : "javascript:void(0);" ?>" class="nav-link 
                             <?php //foreach ($submodules as $submodule) {
-                               //echo current_nav() == basename($submodule->Url, ".php") ? 'active' : null;
-                             //} ?>">
+                                      //echo current_nav() == basename($submodule->Url, ".php") ? 'active' : null;
+                                      //} ?>">
                       <i class="nav-icon <?php echo $module->Icon ?>"></i>
                       <p>
                         <?php echo $module->Module ?>
@@ -67,7 +67,7 @@
                       $data = array(
                         "filter_module" => $module->Module_ID,
                         "filter_menu" => 1,
-                        "sort" => "SubModule"
+                        "sort" => "Sort"
                       );
                       $submodules = get_submodules($data);
                       foreach ($submodules as $submodule): ?>
@@ -78,7 +78,7 @@
                         );
                         $permissions = get_permissions($data) ?>
                         <?php foreach ($permissions as $permission): ?>
-                          <?php if (user_group_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
+                          <?php if (user_role_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
                             <li class="nav-item">
                               <a href="<?php echo $submodule->Url ?>"
                                 class="nav-link <?php //echo current_nav() == basename($submodule->Url, ".php") ? 'active' : null; ?>">
@@ -106,11 +106,11 @@
             );
             $permissions = get_permissions($data) ?>
             <?php foreach ($permissions as $permission): ?>
-              <?php if (user_group_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
+              <?php if (user_role_id() == 1 || has_permission(1, $permission->Permission_ID)): ?>
 
                 <li class="nav-item">
                   <a href="<?php echo $module->Url !== NULL ? $module->Url : "javascript:void(0);" ?>"
-                    class="nav-link <?php //echo current_nav() == basename($module->Url, ".php") ? 'active' : null; ?>">
+                    class="nav-link <?php echo current_nav() == basename($module->Url, ".php") ? 'active' : null; ?>">
                     <i class="nav-icon <?php echo $module->Icon ?>"></i>
                     <p>
                       <?php echo $module->Module ?>

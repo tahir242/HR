@@ -6,17 +6,17 @@ class ModelSubmodule extends Model
 	public function addSubModule($data) 
 	{
 
-		$field 	= array("Sub_Module_ID", "Sub_Module", "Url", "Show_In_Menu", "Active", "Module_ID", "Created_By");
-		$params = array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Module_ID'], user_id());
+		$field 	= array("Sub_Module_ID", "Sub_Module", "Url", "Show_In_Menu", "Active", "Sort", "Module_ID", "Created_By");
+		$params = array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Sort'], $data['Module_ID'], user_id());
     	$this->db->insert("[HR].[dbo].[Sub_Module]", $field, $params);
 
 		$query  = "SELECT TOP 1 Sub_Module_URN FROM [HR].[dbo].[Sub_Module] ORDER BY Sub_Module_URN DESC";
 		$param  = array();
 		$row	= $this->db->get_row($query, $param);
 
-		$insertQuery = "INSERT INTO Sub_Module (Sub_Module_URN, Sub_Module_ID, Sub_Module, Url, Show_In_Menu, Active, Module_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		$insertQuery = "INSERT INTO Sub_Module (Sub_Module_URN, Sub_Module_ID, Sub_Module, Url, Show_In_Menu, Active, Sort, Module_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		$insertStmt = dblite()->prepare($insertQuery);
-		$insertStmt->execute(array($row->Sub_Module_URN, strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Module_ID']));
+		$insertStmt->execute(array($row->Sub_Module_URN, strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Sort'], $data['Module_ID']));
 
 		return $row->Sub_Module_URN;
 	}
@@ -24,16 +24,16 @@ class ModelSubmodule extends Model
 	public function editSubModule($Sub_Module_URN, $data) 
 	{
 
-		$what 		= array("Sub_Module_ID", "Sub_Module", "Url", "Show_In_Menu", "Active", "Module_ID", "Modified_By", "Modified_DtTm");
+		$what 		= array("Sub_Module_ID", "Sub_Module", "Url", "Show_In_Menu", "Active", "Sort", "Module_ID", "Modified_By", "Modified_DtTm");
 		$where 		= array("Sub_Module_URN");
-		$params 	= array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Module_ID'], user_id(), date_time(), $Sub_Module_URN);
+		$params 	= array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Sort'], $data['Module_ID'], user_id(), date_time(), $Sub_Module_URN);
 		$this->db->update("[HR].[dbo].[Sub_Module]", $what, $where, $params);
 
 		if($this->db->rows_effected){
 
-			$updateQuery = "UPDATE Sub_Module SET Sub_Module_ID = ?, Sub_Module = ?, Url = ?, Show_In_Menu = ?, Active = ?, Module_ID = ? WHERE Sub_Module_URN = ?";
+			$updateQuery = "UPDATE Sub_Module SET Sub_Module_ID = ?, Sub_Module = ?, Url = ?, Show_In_Menu = ?, Active = ?, Sort = ?, Module_ID = ? WHERE Sub_Module_URN = ?";
 			$updateStmt = dblite()->prepare($updateQuery);
-			$updateStmt->execute(array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Module_ID'], $Sub_Module_URN));
+			$updateStmt->execute(array(strtoupper($data['Sub_Module_ID']), $data['Sub_Module'], $data['Url'], $data['Show_In_Menu'], $data['Active'], $data['Sort'], $data['Module_ID'], $Sub_Module_URN));
 
 			return $Sub_Module_URN;
 		}else{
@@ -67,7 +67,8 @@ class ModelSubmodule extends Model
 		$sort_data = array(
 			'Sub_Module',
 			'Sub_Module_ID',
-			'Module_ID'
+			'Module_ID',
+			'Sort'
 		);
 
 		if (isset($data['filter_module'])) {
@@ -108,7 +109,7 @@ class ModelSubmodule extends Model
 		return $modules;
 	}
 	
-	public function coundSubModuleByModuleID($Module_ID){
+	public function countSubModuleByModuleID($Module_ID){
 
 		$query = "SELECT COUNT(1) AS total FROM Sub_Module WHERE Module_ID = ?";
 		$stmt = dblite()->prepare($query);

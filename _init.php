@@ -6,7 +6,7 @@ if(function_exists('date_default_timezone_set'))
 	date_default_timezone_set(TIMEZONE);
 
 ini_set('log_errors', TRUE);
-ini_set('error_log', './errors.log');
+ini_set('error_log', DIR_LOG . 'errors.log');
 error_reporting(E_ALL); // Log all errors
 switch (ENVIRONMENT) {
 	case 'development':
@@ -76,6 +76,12 @@ spl_autoload_extensions('.php');
 
 // Load Registry
 $registry = new Registry();
+
+function registry()
+{
+	global $registry;
+	return $registry;
+}
 
 // Loader
 $loader = new Loader($registry);
@@ -160,9 +166,3 @@ $userAgent = $detect->getUserAgent();
 // Document
 $document = new Document($registry);
 $registry->set('document', $document);
-
-function registry()
-{
-	global $registry;
-	return $registry;
-}

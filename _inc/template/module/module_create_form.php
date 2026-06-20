@@ -40,6 +40,14 @@
             <input type="text" class="form-control" id="Url" name="Url" autocomplete="off">
          </div>
       </div>
+
+      <div class="form-group row">
+         <label class="col-lg-3 col-form-label">Sort: *</label>
+         <div class="col-lg-9">
+            <input type="number" class="form-control" id="Sort" name="Sort" autocomplete="off">
+         </div>
+      </div>
+
       <div class="form-group row">
          <label class="col-3 col-form-label">Active: *</label>
          <div class="col-9">

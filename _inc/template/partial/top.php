@@ -30,7 +30,7 @@
           <span class="d-none d-md-inline"><?php echo ucfirst(limit_char(user("Fullname"), 15)); ?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
-          <span class="dropdown-item dropdown-header"><b>Welcome</b><br><?php echo user_group(); ?></span>
+          <span class="dropdown-item dropdown-header"><b>Welcome</b><br><?php echo user_role(); ?></span>
           <div class="dropdown-divider"></div>
             <a href="javascript:void(0);" style="color: black;" data-userid="<?php echo user_id() ?>" class="dropdown-item dropdown-footer user-profile"><b>My Profile</b></a>
             <a href="javascript:void(0);" style="color: black;" class="dropdown-item dropdown-footer logout"><b>Log Out</b></a>

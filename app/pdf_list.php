@@ -8,7 +8,7 @@ if (!is_loggedin()) {
 }
 
 // Redirect, If User has not Read Permission
-if (user_group_id() != 1 && !has_permission(1, 'read_pdf')) {
+if (user_role_id() != 1 && !has_permission(1, 'read_pdf')) {
     redirect(root_url() . '/' . APPDIRNAME . '/dashboard.php');
 }
 

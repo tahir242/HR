@@ -142,6 +142,32 @@ function calculateAge(dateString) {
     };
 }
 
+function validateID(input, len) {
+  const regex = /^[A-Z0-9.\-_\/]*$/;
+  input.value = input.value.toUpperCase();
+
+  if (!regex.test(input.value)) {
+    input.value = input.value.replace(/[^A-Z0-9.\-_\/]/g, '');
+  }
+
+  if (input.value.length > len) {
+    input.value = input.value.slice(0, len);
+  }
+}
+
+function validateCharacters(input, len) {
+  if (input.value.length > len) {
+    input.value = input.value.slice(0, len);
+  }
+}
+
+function digitsOnly(input, length) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+  if (length && input.value.length > length) {
+    input.value = input.value.substring(0, length);
+  }
+}
+
 function printRecord(formData) {
     axios.get(window.baseUrl + "/_inc/" + 'apply.php?action=PRINTFORM')
       .then(response => {

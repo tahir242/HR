@@ -29,13 +29,13 @@ function employee_initial()
 	return $user->getEmpInitial();
 }
 
-function user_group_id() 
+function user_role_id() 
 {
 	global $user;
 	return $user->getRoleId();
 }
 
-function user_group() 
+function user_role() 
 {
 	global $user;
 	return $user->getRole();
@@ -46,7 +46,7 @@ function get_the_user($UserID, $field = null)
 	$model = registry()->get('loader')->model('user');
 	$row = $model->getLocalUser($UserID);
 	if($field){
-		return $row->$field;
+		return $row->$field ?? 'Unknown';
 	}else{
 		return $row;
 	}

@@ -45,6 +45,12 @@
       </div>
    </div>
    <div class="form-group row">
+      <label class="col-lg-3 col-form-label">Sort: *</label>
+      <div class="col-lg-9">
+         <input type="number" class="form-control" id="Sort" name="Sort" value="<?php echo $module->Sort; ?>" autocomplete="off">
+      </div>
+   </div>
+   <div class="form-group row">
       <label class="col-3 col-form-label">Active: *</label>
       <div class="col-9">
          <div class="radio-inline">
@@ -63,8 +69,8 @@
    <div class="row">
       <div class="col-lg-3"></div>
       <div class="col-lg-9">
-         <button type="submit" class="btn btn-primary" id="edit-submit" data-datatable="#list"
-            name="edit-submit" data-form="#edit-form" data-loading-text="Updating...">Update</button>
+         <button type="submit" class="btn btn-primary" id="edit-submit" data-datatable="#list" name="edit-submit"
+            data-form="#edit-form" data-loading-text="Updating...">Update</button>
          <button type="reset" id="reset" name="reset" class="btn btn-danger">Reset</button>
       </div>
    </div>

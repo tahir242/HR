@@ -13,7 +13,7 @@ if (!is_loggedin()) {
 
 // Check, if user has reading permission or not
 // If user have not reading permission return an alert message
-// if (user_group_id() != 1 && !has_permission('access', 'read_role')) {
+// if (user_role_id() != 1 && !has_permission('access', 'read_role')) {
 //   header('HTTP/1.1 422 Unprocessable Entity');
 //   header('Content-Type: application/json; charset=UTF-8');
 //   echo json_encode(array('errorMsg' => "Error Read Permission"));
@@ -55,7 +55,7 @@ if ($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action
   try {
 
     // Check create permission
-    // if (user_group_id() != 1 && !has_permission('access', 'create_usergroup')) {
+    // if (user_role_id() != 1 && !has_permission('access', 'create_usergroup')) {
     //   throw new Exception("Error Read Permission");
     // }
 
@@ -87,7 +87,7 @@ if($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action_
   try {
 
     // Check update permission
-    // if (user_group_id() != 1 && !has_permission('access', 'update_usergroup')) {
+    // if (user_role_id() != 1 && !has_permission('access', 'update_usergroup')) {
     //   throw new Exception("Error Update Permission");
     // }
 

@@ -1,6 +1,7 @@
 <?php 
+declare(strict_types=1);
 
-function get_modules($data = array()){
+function get_modules(array $data = array()) : ?array {
 
     $model = registry()->get('loader')->model('module');
 	$modules = $model->getModules($data);
@@ -8,7 +9,7 @@ function get_modules($data = array()){
 
 }
 
-function get_the_module($ModuleID, $field = null) 
+function get_the_module(string $ModuleID, ?string $field = null) : object|string|bool|null
 {
 	$model = registry()->get('loader')->model('module');
 	$row = $model->getModuleByModuleID($ModuleID);

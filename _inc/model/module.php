@@ -4,33 +4,33 @@ class ModelModule extends Model
 
 	public function addModule($data) 
 	{
-		$field = array("Module_ID", "Module", "Icon", "Url", "Has_Sub_Menu", "Active", "Created_By");
-		$params = array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], user_id());
+		$field = array("Module_ID", "Module", "Icon", "Url", "Has_Sub_Menu", "Active", "Sort", "Created_By");
+		$params = array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], $data['Sort'], user_id());
     	$this->db->insert("[HR].[dbo].[Module]", $field, $params);
 
 		$query  = "SELECT TOP 1 Module_URN FROM [HR].[dbo].[Module] ORDER BY Module_URN DESC";
 		$param  = array();
 		$row	= $this->db->get_row($query, $param);
 
-		$insertQuery = "INSERT INTO Module (Module_URN, Module_ID, Module, Icon, Url, Has_Sub_Menu, Active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		$insertQuery = "INSERT INTO Module (Module_URN, Module_ID, Module, Icon, Url, Has_Sub_Menu, Active, Sort) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		$insertStmt = dblite()->prepare($insertQuery);
-		$insertStmt->execute(array($row->Module_URN, strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active']));
+		$insertStmt->execute(array($row->Module_URN, strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], $data['Sort']));
 		return $row->Module_URN;
 	}
 
 	public function editModule($Module_URN, $data) 
 	{
 
-		$what 		= array("Module_ID", "Module", "Icon", "Url", "Has_Sub_Menu", "Active", "Modified_By", "Modified_DtTm");
+		$what 		= array("Module_ID", "Module", "Icon", "Url", "Has_Sub_Menu", "Active", "Sort", "Modified_By", "Modified_DtTm");
 		$where 		= array("Module_URN");
-		$params 	= array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], user_id(), date_time(), $Module_URN);
+		$params 	= array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], $data['Sort'], user_id(), date_time(), $Module_URN);
 		$this->db->update("[HR].[dbo].[Module]", $what, $where, $params);
 
 		if($this->db->rows_effected){
 
-			$updateQuery = "UPDATE Module SET Module_ID = ?, Module = ?, Icon = ?, Url = ?, Has_Sub_Menu = ?, Active = ? WHERE Module_URN = ?";
+			$updateQuery = "UPDATE Module SET Module_ID = ?, Module = ?, Icon = ?, Url = ?, Has_Sub_Menu = ?, Active = ?, Sort = ? WHERE Module_URN = ?";
 			$updateStmt = dblite()->prepare($updateQuery);
-			$updateStmt->execute(array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], $Module_URN));
+			$updateStmt->execute(array(strtoupper($data['Module_ID']), $data['Module'], $data['Icon'], $data['Url'], $data['Has_Sub_Menu'], $data['Active'], $data['Sort'], $Module_URN));
 
 			return $Module_URN;
 		}else{

@@ -340,29 +340,6 @@ function highlightKeywords($text, $keyword)
 	return $text;
 }
 
-function showMaritalStatus($field = null)
-{
-
-	$dictionary = array(
-		"001000" => "Unknown",
-		"001002" => "Single",
-		"001001" => "Married",
-		"001003" => "Window",
-		"001004" => "Windower",
-		"001005" => "Divorced",
-		"001006" => "Seperated",
-		"Blank" => ""
-	);
-
-	if ($field !== null) {
-		$field = $field == '' ? "Blank" : $field;
-		return $dictionary[$field];
-	} else {
-		return $field;
-	}
-
-}
-
 function parameter($parameter)
 {
 
@@ -437,9 +414,18 @@ function insert_system_time_log($type, $source = null){
 	$endTime = microtime(true);
 	$pageLoadTime = $endTime - $startTime;
 
-	if (user_group_id() != 1) {
+	if (user_role_id() != 1) {
 		$insertQuery = "INSERT INTO System_Process_Time_log ([Type], Source, [Time], Date_Time, User) VALUES (?, ?, ?, ?, ?)";
 		$insertStmt = dblite()->prepare($insertQuery);
 		$insertStmt->execute([$type, $source, number_format($pageLoadTime, 4), date_time(), user_id()]);
 	}
+}
+
+function getHostnameFromIP($ip) {
+    return gethostbyaddr($ip);
+}
+
+function current_year(): int
+{
+	return parameter('ration_working_year') ? parameter('ration_working_year') : year();
 }
