@@ -185,9 +185,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="info-box">
-                        <span class="info-box-icon text-bg-primary shadow-sm">
-                            <i class="fa fa-users"></i>
-                        </span>
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fa fa-users"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Total Eligible Employee</span>
                             <span class="info-box-number">
@@ -201,9 +199,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="info-box">
-                        <span class="info-box-icon text-bg-success shadow-sm">
-                            <i class="fa fa-thumbs-up"></i>
-                        </span>
+                        <span class="info-box-icon bg-success elevation-1"><i class="fa fa-thumbs-up"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Distributed</span>
                             <span class="info-box-number"><?php echo number_format($totalIssued, 0, ",", ","); ?></span>
@@ -217,9 +213,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                 <!-- <div class="clearfix hidden-md-up"></div> -->
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="info-box">
-                        <span class="info-box-icon text-bg-danger shadow-sm">
-                            <i class="fa fa-shopping-cart"></i>
-                        </span>
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-shopping-cart"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Not Distributed</span>
                             <span
