@@ -4,8 +4,8 @@ class ModelReasonOfTurnover extends Model
 {
     public function addReasonOfTurnover($data)
     {
-        $field = array("[Reason]", "[Active]", "[Created_By]");
-        $params = array($data['Reason'], $data['Active'], user_id());
+        $field = array("[Resignation_Type_ID]", "[Reason]", "[Active]", "[Created_By]");
+        $params = array($data['Resignation_Type_ID'], $data['Reason'], $data['Active'], user_id());
         $this->db->insert("[Reason_of_Turnover]", $field, $params);
         $query = "SELECT TOP 1 [Reason_ID] FROM [Reason_of_Turnover] ORDER BY [Reason_ID] DESC";
         $row = $this->db->get_row($query, []);
@@ -14,9 +14,9 @@ class ModelReasonOfTurnover extends Model
 
     public function editReasonOfTurnover($id, $data)
     {
-        $what = array("[Reason]", "[Active]", "[Modified_By]", "[Modified_DtTm]");
+        $what = array("[Resignation_Type_ID]", "[Reason]", "[Active]", "[Modified_By]", "[Modified_DtTm]");
         $where = array("Reason_ID");
-        $params = array($data['Reason'], $data['Active'], user_id(), date_time(), $id);
+        $params = array($data['Resignation_Type_ID'], $data['Reason'], $data['Active'], user_id(), date_time(), $id);
         $this->db->update("[Reason_of_Turnover]", $what, $where, $params);
 
         if ($this->db->rows_effected) {
@@ -100,6 +100,6 @@ class ModelReasonOfTurnover extends Model
             $sql .= "OFFSET " . (int) $data['start'] . " ROWS FETCH NEXT " . (int) $data['limit'] . " ROWS ONLY";
         }
 
-        return $this->db->get_results($sql, [1]);
+        return $this->db->get_results($sql, []);
     }
 }

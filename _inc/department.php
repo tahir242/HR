@@ -128,7 +128,9 @@ if (isset($request->get['Department_ID']) and isset($request->get['action_type']
 
 // delete form
 if (isset($request->get['Department_ID']) && isset($request->get['action_type']) && $request->get['action_type'] == 'DELETE_FORM') {
-    $row = $model->getDepartment($request->get['Department_ID']);
+    $Department_ID = $request->get['Department_ID'];
+    $department = $model->getDepartment($Department_ID);
+    $departments = $model->getDepartments(); 
     include 'template/department/department_delete_form.php';
     exit();
 }

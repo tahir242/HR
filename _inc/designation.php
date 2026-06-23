@@ -128,6 +128,9 @@ if (isset($request->get['Designation_ID']) and isset($request->get['action_type'
 
 // delete form
 if (isset($request->get['action_type']) && $request->get['action_type'] == 'DELETE_FORM') {
+    $Designation_ID = $request->get['Designation_ID'];
+    $designation = $model->getDesignation($Designation_ID);
+    $designations = $model->getDesignations(); 
     include 'template/designation/designation_delete_form.php';
     exit();
 }

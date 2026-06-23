@@ -23,16 +23,16 @@ docReady(function () {
         "processing": true,
         "serverSide": true,
         "dom": "rtip",
-        "ajax": window.baseUrl + "/_inc/reason_of_turnover.php",
+        "ajax": window.baseUrl + "/_inc/employee_category.php",
         "order": [[1, "asc"]],
         "aLengthMenu": [
             [10, 25, 50, 100, 200, -1],
             [10, 25, 50, 100, 200, "All"]
         ],
         "columnDefs": [
-            { "targets": [4], "orderable": false },
+            { "targets": [3], "orderable": false },
             { "visible": false, "targets": hideColumnsArray },
-            { "className": "text-center", "targets": [0, 3, 4] },
+            { "className": "text-center", "targets": [0, 2, 3] },
             {
                 "targets": [0],
                 'createdCell': function (td, cellData, rowData, row, col) {
@@ -57,17 +57,10 @@ docReady(function () {
                     $(td).attr('data-title', $("#list thead tr th:eq(3)").text());
                 }
             },
-            {
-                "targets": [4],
-                'createdCell': function (td, cellData, rowData, row, col) {
-                    $(td).attr('data-title', $("#list thead tr th:eq(4)").text());
-                }
-            },
         ],
         "aoColumns": [
-            { data: "Reason_ID" },
-            { data: "Resignation_Type_ID" },
-            { data: "Reason" },
+            { data: "Category_ID" },
+            { data: "Employee_Category" },
             { data: "Active" },
             { data: "btn_edit" }
         ],
@@ -124,8 +117,8 @@ docReady(function () {
         e.preventDefault();
         let $scope = {
             size: "md",
-            title: "Create New Reason of Turnover",
-            url: window.baseUrl + "/_inc/reason_of_turnover.php?action_type=CREATE"
+            title: "Create New Employee Category",
+            url: window.baseUrl + "/_inc/employee_category.php?action_type=CREATE"
         };
         openModal($scope);
     });
@@ -149,8 +142,8 @@ docReady(function () {
         var d = dt.DataTable().row($(this).closest("tr")).data();
         let $scope = {
             size: "md",
-            title: d.Reason,
-            url: window.baseUrl + "/_inc/reason_of_turnover.php?action_type=EDIT&Reason_ID=" + d.Reason_ID
+            title: d.Employee_Category,
+            url: window.baseUrl + "/_inc/employee_category.php?action_type=EDIT&Category_ID=" + d.Category_ID
         };
         openModal($scope);
     });
@@ -174,8 +167,8 @@ docReady(function () {
         var d = dt.DataTable().row($(this).closest("tr")).data();
         let $scope = {
             size: "md",
-            title: "Delete " + d.Reason,
-            url: window.baseUrl + "/_inc/reason_of_turnover.php?action_type=DELETE_FORM&Reason_ID=" + d.Reason_ID
+            title: "Delete " + d.Employee_Category,
+            url: window.baseUrl + "/_inc/employee_category.php?action_type=DELETE_FORM&Category_ID=" + d.Category_ID
         };
         openModal($scope);
     });
@@ -194,3 +187,5 @@ docReady(function () {
     });
 
 });
+
+

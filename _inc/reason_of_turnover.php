@@ -10,11 +10,14 @@ if (!is_loggedin()) {
 }
 
 $model = registry()->get('loader')->model('reason_of_turnover');
-
+$rmodel = registry()->get('loader')->model('resignation_type');
 function validate_request_data($request)
 {
     if (!validateString($request->post['Reason'])) {
         throw new Exception("Please Write Reason");
+    }
+    if (!validateInteger($request->post['Resignation_Type_ID'])) {
+        throw new Exception("Please Select Resignation Type");
     }
 }
 
@@ -115,6 +118,7 @@ if ($request->server['REQUEST_METHOD'] == 'POST' && isset($request->post['action
 
 // create form
 if (isset($request->get['action_type']) && $request->get['action_type'] == 'CREATE') {
+    $resignationTypes = $rmodel->getResignationTypes();
     include 'template/reason_of_turnover/reason_of_turnover_create_form.php';
     exit();
 }
@@ -122,13 +126,16 @@ if (isset($request->get['action_type']) && $request->get['action_type'] == 'CREA
 // edit form
 if (isset($request->get['Reason_ID']) and isset($request->get['action_type']) && $request->get['action_type'] == 'EDIT') {
     $row = $model->getReasonOfTurnover($request->get['Reason_ID']);
+    $resignationTypes = $rmodel->getResignationTypes();
     include 'template/reason_of_turnover/reason_of_turnover_edit_form.php';
     exit();
 }
 
 // delete form
 if (isset($request->get['Reason_ID']) and isset($request->get['action_type']) && $request->get['action_type'] == 'DELETE_FORM') {
-    $row = $model->getReasonOfTurnover($request->get['Reason_ID']);
+    $Reason_ID = $request->get['Reason_ID'];
+    $reason = $model->getReasonOfTurnover($Reason_ID);
+    $reasons = $model->getReasonOfTurnovers();
     include 'template/reason_of_turnover/reason_of_turnover_delete_form.php';
     exit();
 }
@@ -156,6 +163,13 @@ $columns = array(
         }
     ),
     array('db' => 'Reason_ID', 'dt' => 'Reason_ID'),
+    array(
+        'db' => 'Resignation_Type_ID',
+        'dt' => 'Resignation_Type_ID',
+        'formatter' => function ($d, $row) {
+            return get_the_resignation_type($d, 'Resignation_Type');
+        }
+    ),
     array('db' => 'Reason', 'dt' => 'Reason'),
     array(
         'db' => 'Active',

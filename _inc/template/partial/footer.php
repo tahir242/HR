@@ -34,6 +34,7 @@
 <!-- SweetAlert JS -->
 <script src="../assets/sweetalert/sweetalert2.js" type="text/javascript"></script>
 <script src="../assets/select2/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 <!-- Axios JS -->
 <script src="../assets/app/js/axios.min.js"></script>
 <!-- Datatables -->

@@ -1,9 +1,3 @@
-<?php
-$Department_ID = $request->get['Department_ID'];
-$department = $model->getDepartment($Department_ID);
-
-$departments = $model->getDepartments(); 
-?>
 <form id="form-delete" action="department.php" method="post">
     <input type="hidden" name="action_type" value="DELETE">
     <input type="hidden" name="Department_ID" value="<?php echo $Department_ID; ?>">
