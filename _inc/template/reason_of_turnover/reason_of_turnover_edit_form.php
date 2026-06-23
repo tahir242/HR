@@ -4,6 +4,20 @@
    <input type="hidden" name="Reason_ID" value="<?php echo $row->Reason_ID; ?>">
 
    <div class="mb-3 row">
+      <label for="Resignation_Type_ID" class="col-sm-3 col-form-label">Resignation Type <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+         <select class="form-control tom-select" id="Resignation_Type_ID" name="Resignation_Type_ID">
+            <option value="">Select Resignation Type</option>
+            <?php foreach($resignationTypes as $rt): ?>
+                <?php if($rt->Active == 1): ?>
+                    <option value="<?php echo $rt->Resignation_Type_ID; ?>" <?php echo $row->Resignation_Type_ID == $rt->Resignation_Type_ID ? 'selected' : ''; ?>><?php echo $rt->Resignation_Type; ?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
+         </select>
+      </div>
+   </div>
+
+   <div class="mb-3 row">
       <label for="Reason" class="col-sm-3 col-form-label">Reason <span class="text-danger">*</span></label>
       <div class="col-sm-9">
           <input type="text" class="form-control" id="Reason" name="Reason" value="<?php echo htmlspecialchars($row->Reason); ?>" autocomplete="off" oninput="validateCharacters(this, 200)">

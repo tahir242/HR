@@ -26,8 +26,18 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
 
 // LOAD MODEL 
 $imodel = registry()->get('loader')->model('indexing');
+$dictModel = registry()->get('loader')->model('dictionary');
 
-$pdfrow = $imodel->getpdfforindexing(); ?>
+$pdfrow = $imodel->getpdfforindexing();
+
+// LOAD DICTIONARIES
+$departments = $dictModel->getDepartments();
+$designations = $dictModel->getDesignations();
+$locations = registry()->get('loader')->model('location')->getLocations();
+$categories = registry()->get('loader')->model('employee_category')->getEmployeeCategories();
+$resTypes = registry()->get('loader')->model('resignation_type')->getResignationTypes();
+$reasons = registry()->get('loader')->model('reason_of_turnover')->getReasonOfTurnovers();
+?>
 <style>
     body {
         user-select: none;
@@ -60,7 +70,7 @@ $pdfrow = $imodel->getpdfforindexing(); ?>
     }
 
     #pdf_screen {
-        height: 650px;
+        height: 750px;
     }
 
     .error-message {
@@ -70,34 +80,6 @@ $pdfrow = $imodel->getpdfforindexing(); ?>
         /* margin-top: 5px; */
     }
 
-    .autocomplete-items {
-        position: absolute;
-        border: 1px solid #d4d4d4;
-        border-bottom: none;
-        border-top: none;
-        z-index: 99;
-        top: 100%;
-        left: 0;
-        right: 0;
-    }
-
-    .autocomplete-items div {
-        padding: 5px;
-        cursor: pointer;
-        background-color: #fff;
-        border-bottom: 1px solid #d4d4d4;
-    }
-
-    .autocomplete-items div:hover {
-        /*when hovering an item:*/
-        background-color: #e9e9e9;
-    }
-
-    .autocomplete-active {
-        /*when navigating through the items using the arrow keys:*/
-        background-color: DodgerBlue !important;
-        color: #ffffff;
-    }
 </style>
 
 <!-- Content Wrapper Start -->
@@ -136,47 +118,132 @@ $pdfrow = $imodel->getpdfforindexing(); ?>
                     <form id="create-form" action="indexing.php" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="action_type" value="CREATE">
                         <input type="hidden" name="Scan" value="<?php echo $pdfrow->Scan ?>">
+                        
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="Employee_ID">Employee ID: <span style="color: red;">*</span></label> <button
-                                    class="btn btn-sm btn-secondary p-1 float-right" id="missing-id">Fill Missing ID</button>
-                                <input type="text" name="Employee_ID" value="<?php echo $pdfrow->Employee_ID ? $pdfrow->Employee_ID : "" ?>" class="form-control" id="Employee_ID"
-                                    placeholder="Write Employee ID" tabindex="1" autofocus autocomplete="off">
-                                <div class="error-message" id="employee-id"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="Employee_Name">Employee Name: <span style="color: red;">*</span></label>
-                                <input type="text" name="Employee_Name" value="<?php echo $pdfrow->Name ? $pdfrow->Name : "" ?>" class="form-control" id="Employee_Name"
-                                    placeholder="Write Employee Name" tabindex="2" required autocomplete="off">
-                                <div class="error-message" id="employee-name"></div>
-                            </div>
-                            <div class="form-group search-box">
-                                <label for="Department">Department:</label>
-                                <div class="input-group autocomplete">
-                                    <input type="text" placeholder="Write Employee Department" tabindex="3"
-                                        class="form-control" name="Department" value="<?php echo $pdfrow->Department ? get_the_department($pdfrow->Department, "Department") : "" ?>" id="Department" autocomplete="off">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="Employee_ID" style="font-size:14px">Employee ID: <span style="color: red;">*</span></label>
+                                    <button type="button" class="btn btn-sm btn-secondary p-0 px-1 float-right" id="missing-id" style="font-size: 10px;">Fill Missing</button>
+                                    <input type="text" name="Employee_ID" value="<?php echo htmlspecialchars((string)$pdfrow->Employee_ID); ?>" class="form-control form-control-sm" id="Employee_ID" placeholder="Employee ID" tabindex="1" autofocus autocomplete="off">
+                                    <div class="error-message" id="employee-id"></div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="Employee_Name" style="font-size:14px">Employee Name: <span style="color: red;">*</span></label>
+                                    <input type="text" name="Employee_Name" value="<?php echo htmlspecialchars((string)$pdfrow->Name); ?>" class="form-control form-control-sm" id="Employee_Name" placeholder="Employee Name" tabindex="2" required autocomplete="off">
+                                    <div class="error-message" id="employee-name"></div>
                                 </div>
                             </div>
-                            <div class="form-group search-box">
-                                <label for="Designation">Designation:</label>
-                                <div class="input-group autocomplete">
-                                    <input type="text" placeholder="Write Employee Designation" tabindex="4"
-                                        class="form-control" name="Designation" value="<?php echo $pdfrow->Designation ? get_the_designation($pdfrow->Designation, "Designation") : "" ?>" id="Designation" autocomplete="off">
+
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="Gender" style="font-size:14px">Gender:</label>
+                                    <select name="Gender" id="Gender" class="form-control form-control-sm tom-select" tabindex="3">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male" <?php echo $pdfrow->Gender == 'Male' ? 'selected' : ''; ?>>Male</option>
+                                        <option value="Female" <?php echo $pdfrow->Gender == 'Female' ? 'selected' : ''; ?>>Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="Date_of_Birth" style="font-size:14px">Date of Birth:</label>
+                                    <input type="text" name="Date_of_Birth" value="<?php echo $pdfrow->Date_of_Birth ? date_normalizer($pdfrow->Date_of_Birth, "d-m-Y") : ""; ?>" class="form-control form-control-sm" id="Date_of_Birth" placeholder="DD-MM-YYYY" tabindex="4" oninput="formatDate(this)" autocomplete="off">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="DOJ">Date of Joining:</label>
-                                <input type="text" name="DOJ" value="<?php echo $pdfrow->Date_of_Joining ? date_normalizer($pdfrow->Date_of_Joining, "d-m-Y") : "" ?>" class="form-control" id="DOJ" placeholder="DD-MM-YYYY"
-                                    tabindex="5" oninput="formatDate(this)" required autocomplete="off">
-                                <div class="error-message" id="employee-doj"></div>
+
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Department" style="font-size:14px">Department:</label>
+                                    <select name="Department" id="Department" class="form-control form-control-sm tom-select" tabindex="5">
+                                        <option value="">Select Department</option>
+                                        <?php foreach ($departments as $dept): ?>
+                                            <option value="<?php echo $dept->Department_ID; ?>" <?php echo $pdfrow->Department == $dept->Department_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$dept->Department); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="Designation" style="font-size:14px">Designation:</label>
+                                    <select name="Designation" id="Designation" class="form-control form-control-sm tom-select" tabindex="6">
+                                        <option value="">Select Designation</option>
+                                        <?php foreach ($designations as $desig): ?>
+                                            <option value="<?php echo $desig->Designation_ID; ?>" <?php echo $pdfrow->Designation == $desig->Designation_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$desig->Designation); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Location" style="font-size:14px">Location:</label>
+                                    <select name="Location" id="Location" class="form-control form-control-sm tom-select" tabindex="7">
+                                        <option value="">Select Location</option>
+                                        <?php foreach ($locations as $loc): ?>
+                                            <option value="<?php echo $loc->Location_ID; ?>" <?php echo $pdfrow->Location == $loc->Location_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$loc->Location); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="DOJ" style="font-size:14px">Date of Joining:</label>
+                                    <input type="text" name="DOJ" value="<?php echo $pdfrow->Date_of_Joining ? date_normalizer($pdfrow->Date_of_Joining, "d-m-Y") : ""; ?>" class="form-control form-control-sm" id="DOJ" placeholder="DD-MM-YYYY" tabindex="8" oninput="formatDate(this)" autocomplete="off">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="Date_of_Leaving" style="font-size:14px">Date of Leaving:</label>
+                                    <input type="text" name="Date_of_Leaving" value="<?php echo $pdfrow->Date_of_Leaving ? date_normalizer($pdfrow->Date_of_Leaving, "d-m-Y") : ""; ?>" class="form-control form-control-sm" id="Date_of_Leaving" placeholder="DD-MM-YYYY" tabindex="9" oninput="formatDate(this)" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Employee_Category" style="font-size:14px">Employee Category:</label>
+                                    <select name="Employee_Category" id="Employee_Category" class="form-control form-control-sm tom-select" tabindex="10">
+                                        <option value="">Select Category</option>
+                                        <?php foreach ($categories as $cat): ?>
+                                            <option value="<?php echo $cat->Category_ID; ?>" <?php echo $pdfrow->Employee_Category == $cat->Category_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$cat->Employee_Category); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="Resignation_Type" style="font-size:14px">Resignation Type:</label>
+                                    <select name="Resignation_Type" id="Resignation_Type" class="form-control form-control-sm tom-select" tabindex="11">
+                                        <option value="">Select Type</option>
+                                        <?php foreach ($resTypes as $rt): ?>
+                                            <option value="<?php echo $rt->Resignation_Type_ID; ?>" <?php echo $pdfrow->Resignation_Type == $rt->Resignation_Type_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$rt->Resignation_Type); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="Reason_of_Turnover" style="font-size:14px">Reason of Turnover:</label>
+                                    <select name="Reason_of_Turnover" id="Reason_of_Turnover" class="form-control form-control-sm tom-select" tabindex="12" placeholder="Select Reason">
+                                        <option value="">Select Reason</option>
+                                        <?php 
+                                        $filtered_reasons = [];
+                                        if($pdfrow->Resignation_Type) {
+                                            foreach($reasons as $reason) {
+                                                if($reason->Resignation_Type_ID == $pdfrow->Resignation_Type) {
+                                                    $filtered_reasons[] = $reason;
+                                                }
+                                            }
+                                        }
+                                        foreach ($filtered_reasons as $reason): ?>
+                                            <option value="<?php echo $reason->Reason_ID; ?>" <?php echo $pdfrow->Reason_of_Turnover == $reason->Reason_ID ? 'selected' : ''; ?>><?php echo htmlspecialchars((string)$reason->Reason); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Remarks" style="font-size:14px">Remarks:</label>
+                                <textarea name="Remarks" id="Remarks" class="form-control form-control-sm" oninput="validateCharacters(this, 500);" rows="3" tabindex="13" placeholder="Enter any remarks here..."><?php echo htmlspecialchars((string)$pdfrow->Remarks); ?></textarea>
+                            </div>
+
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="create-submit" data-datatable="#list"
-                                name="create-submit" data-form="#create-form" data-loading-text="Saving..."
-                                tabindex="6">Save &
-                                Next</button>
-                            <button type="reset" id="reset" name="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn btn-primary" id="create-submit" data-datatable="#list" name="create-submit" data-form="#create-form" data-loading-text="Saving..." tabindex="14">Save & Next</button>
+                            <button type="reset" id="reset" name="reset" class="btn btn-danger" tabindex="15">Reset</button>
                         </div>
                     </form>
                 </div>
@@ -216,3 +283,5 @@ $pdfrow = $imodel->getpdfforindexing(); ?>
 </div>
 <!-- Content Wrapper End -->
 <?php include realpath(__DIR__ . '/../') . '/_inc/template/partial/footer.php'; ?>
+
+

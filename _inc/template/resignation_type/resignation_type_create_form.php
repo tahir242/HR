@@ -1,25 +1,11 @@
 <!--begin::Form-->
-<form id="create-form" class="form-horizontal" action="reason_of_turnover.php" method="post" enctype="multipart/form-data">
+<form id="create-form" class="form-horizontal" action="Resignation_Type.php" method="post" enctype="multipart/form-data">
    <input type="hidden" name="action_type" value="CREATE">
 
    <div class="mb-3 row">
-      <label for="Resignation_Type_ID" class="col-sm-3 col-form-label">Resignation Type <span class="text-danger">*</span></label>
+      <label for="Resignation_Type" class="col-sm-3 col-form-label">Resignation_Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-         <select class="form-control tom-select" id="Resignation_Type_ID" name="Resignation_Type_ID">
-            <option value="">Select Resignation Type</option>
-            <?php foreach($resignationTypes as $rt): ?>
-                <?php if($rt->Active == 1): ?>
-                    <option value="<?php echo $rt->Resignation_Type_ID; ?>"><?php echo $rt->Resignation_Type; ?></option>
-                <?php endif; ?>
-            <?php endforeach; ?>
-         </select>
-      </div>
-   </div>
-
-   <div class="mb-3 row">
-      <label for="Reason" class="col-sm-3 col-form-label">Reason <span class="text-danger">*</span></label>
-      <div class="col-sm-9">
-          <input type="text" class="form-control" id="Reason" name="Reason" autocomplete="off" oninput="validateCharacters(this, 200)">
+          <input type="text" class="form-control" id="Resignation_Type" name="Resignation_Type" autocomplete="off" oninput="validateCharacters(this, 200)">
       </div>
    </div>
 
@@ -47,3 +33,5 @@
    </div>
 </form>
 <!--end::Form-->
+
+

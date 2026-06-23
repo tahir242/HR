@@ -1,9 +1,3 @@
-<?php
-$Reason_ID = $request->get['Reason_ID'];
-$reason = $model->getReasonOfTurnover($Reason_ID);
-
-$reasons = $model->getReasonOfTurnovers(); 
-?>
 <form id="form-delete" action="reason_of_turnover.php" method="post">
     <input type="hidden" name="action_type" value="DELETE">
     <input type="hidden" name="Reason_ID" value="<?php echo $Reason_ID; ?>">

@@ -54,3 +54,14 @@ function get_items($data = array()){
 	return $results;
 
 }
+
+function get_the_resignation_type($id, $field = null)
+{
+    $model = registry()->get('loader')->model('resignation_type');
+    $row = $model->getResignationType($id);
+    if ($field) {
+        return $row ? $row->$field : "";
+    } else {
+        return $row;
+    }
+}

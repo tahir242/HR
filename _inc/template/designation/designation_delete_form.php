@@ -1,9 +1,3 @@
-<?php
-$Designation_ID = $request->get['Designation_ID'];
-$designation = $model->getDesignation($Designation_ID);
-
-$designations = $model->getDesignations(); 
-?>
 <form id="form-delete" action="designation.php" method="post">
     <input type="hidden" name="action_type" value="DELETE">
     <input type="hidden" name="Designation_ID" value="<?php echo $Designation_ID; ?>">

@@ -1,83 +1,4 @@
-function autocomplete(inp) {
-    var currentFocus;
 
-    const debounceFetch = debounce(function (val, column) {
-        closeAllLists();
-        axios.get(`../_inc/value.php?action_type=AUTOCOMPLETE&value=${val}&column=${column}`)
-            .then(function (response) {
-                var arr = response.data.results;
-                currentFocus = -1;
-
-                var a = $("<div>").attr("id", inp.id + "autocomplete-list").addClass("autocomplete-items");
-                $(inp).parent().append(a);
-                console.log($(inp).parent());
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i].toUpperCase().includes(val.toUpperCase())) {
-                        var start = arr[i].toUpperCase().indexOf(val.toUpperCase());
-                        var b = $("<div>").html(arr[i].substr(0, start) + "<strong>" + arr[i].substr(start, val.length) + "</strong>" + arr[i].substr(start + val.length));
-                        b.append("<input type='hidden' value='" + arr[i] + "'>");
-                        b.on("click", function (e) {
-                            inp.value = $(this).find("input").val();
-                            closeAllLists();
-                        });
-                        a.append(b);
-                    }
-                }
-            })
-            .catch(function (error) {
-                console.error('Error fetching data:', error);
-            });
-    }, 300);
-
-    inp.addEventListener("input", function (e) {
-        var val = this.value;
-        debounceFetch(val, inp.name);
-    });
-
-    inp.addEventListener("keydown", function (e) {
-        var x = $("#" + this.id + "autocomplete-list div");
-        if (e.keyCode === 40) {
-            currentFocus++;
-            addActive(x);
-        } else if (e.keyCode === 38) {
-            currentFocus--;
-            addActive(x);
-        } else if (e.keyCode === 13) {
-            e.preventDefault();
-            if (currentFocus > -1 && x.length && currentFocus < x.length) {
-                x[currentFocus].click();
-            } else {
-                $('.submit').click();
-            }
-        }
-    });
-
-    function addActive(x) {
-        if (!x) return false;
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        x[currentFocus].classList.add("autocomplete-active");
-    }
-
-    function removeActive(x) {
-        for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-        }
-    }
-
-    function closeAllLists(elmnt) {
-        $(".autocomplete-items").each(function () {
-            if (elmnt !== this && elmnt !== inp) {
-                $(this).remove();
-            }
-        });
-    }
-
-    $(document).on("click", function (e) {
-        closeAllLists(e.target);
-    });
-}
 
 function docReady(fn) {
     if (document.readyState === "complete" || document.readyState === "interactive") {
@@ -195,7 +116,7 @@ docReady(function () {
             let focusedElement = document.activeElement;
             if (focusedElement.tabIndex >= 1) {
                 event.preventDefault();
-                if (focusedElement.tabIndex === 6) {
+                if (focusedElement.tabIndex === 14) {
                     document.getElementById('create-submit').click();
                 } else {
                     // Move focus to the next element
@@ -218,8 +139,38 @@ docReady(function () {
         }
     });
 
-    autocomplete(document.getElementById("Department"));
-    autocomplete(document.getElementById("Designation"));
+    document.querySelectorAll('.tom-select').forEach((el)=>{
+        new TomSelect(el, {
+            create: false,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            }
+        });
+    });
+
+    var rtSelectEl = document.getElementById('Resignation_Type');
+    var rotSelectEl = document.getElementById('Reason_of_Turnover');
+
+    if (rtSelectEl && rotSelectEl && rtSelectEl.tomselect && rotSelectEl.tomselect) {
+        rtSelectEl.tomselect.on('change', function(value) {
+            var rot = rotSelectEl.tomselect;
+            rot.clear(true);
+            rot.clearOptions();
+            if (value) {
+                axios.get(window.baseUrl + "/_inc/value.php?action_type=GET_REASON_BY_TYPE&Resignation_Type_ID=" + value)
+                    .then(function(response) {
+                        if (response.data.valid && response.data.results) {
+                            response.data.results.forEach(function(item) {
+                                rot.addOption({value: item.Reason_ID, text: item.Reason});
+                            });
+                        }
+                    }).catch(function(error) {
+                        console.error('Error fetching reasons:', error);
+                    });
+            }
+        });
+    }
 
     function showError(message) {
         window.swal.fire({

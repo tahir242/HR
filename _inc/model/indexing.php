@@ -36,11 +36,28 @@ class ModelIndexing extends Model
 
 	public function addIndex($data) 
 	{
-        $department  = $this->checkDepartment($data['Department']);
-        $designation = $this->checkDesignation($data['Designation']);
-		$what  = array("Employee_ID", "Name", "Department", "Designation", "Date_of_Joining");
+		$what  = array(
+            "Employee_ID", "Name", "Gender", "Date_of_Birth", "Department", "Designation", 
+            "Location", "Date_of_Joining", "Date_of_Leaving", "Employee_Category", 
+            "Resignation_Type", "Reason_of_Turnover", "Remarks"
+        );
 		$where  = array("Scan");
-		$params = array($data['Employee_ID'], ucwords($data['Employee_Name']), $department, $designation, $data['DOJ'], $data['Scan'],);
+		$params = array(
+            $data['Employee_ID'] ?: null, 
+            ucwords($data['Employee_Name']), 
+            $data['Gender'] ?: null,
+            $data['Date_of_Birth'] ?: null,
+            $data['Department'] ?: null, 
+            $data['Designation'] ?: null,
+            $data['Location'] ?: null,
+            $data['DOJ'] ?: null, 
+            $data['Date_of_Leaving'] ?: null,
+            $data['Employee_Category'] ?: null,
+            $data['Resignation_Type'] ?: null,
+            $data['Reason_of_Turnover'] ?: null,
+            $data['Remarks'] ?: null,
+            $data['Scan']
+        );
         $this->db->update("[HR].[dbo].[Employee_PDF]", $what, $where, $params);
 		if($this->db->rows_effected){
             $this->updateStatus( "Indexed", $data['Scan'] );
@@ -48,42 +65,6 @@ class ModelIndexing extends Model
 		}else{
 			throw new Exception("Error: Indexing Failed..");
 		}
-	}
-
-	public function checkDepartment($department)
-	{
-        if($department){
-            $stmt = "SELECT * FROM [Department] WHERE Department = ?";
-            $row = $this->db->get_row($stmt, [ucwords($department)]);
-            if(!$row){
-                $field = ["Department", "Created_By"];
-                $this->db->insert("[Department]", $field, [ucwords($department), user_id()]);
-                $stmt = "SELECT TOP 1 * FROM [Department] ORDER BY Department_ID DESC";
-                $row = $this->db->get_row($stmt, []);
-                return $row->Department_ID;
-            }
-            return $row->Department_ID;
-        }else{
-            return null;
-        }
-	}
-
-	public function checkDesignation($designation)
-	{
-        if($designation){
-            $stmt = "SELECT * FROM [Designation] WHERE Designation = ?";
-            $row = $this->db->get_row($stmt, [ucwords($designation)]);
-            if(!$row){
-                $field = ["Designation", "Created_By"];
-                $this->db->insert("[Designation]", $field, [ucwords($designation), user_id()]);
-                $stmt = "SELECT TOP 1 * FROM [Designation] ORDER BY Designation_ID DESC";
-                $row = $this->db->get_row($stmt, []);
-                return $row->Designation_ID;
-            }
-            return $row->Designation_ID;
-        }else{
-            return null;
-        }
 	}
 
 }

@@ -8,17 +8,17 @@ if (!is_loggedin()) {
 }
 
 // Redirect, If User has not Read Permission
-if (user_role_id() != 1 && !has_permission(1, 'read_reason_of_turnover')) {
+if (user_role_id() != 1 && !has_permission(1, 'read_resignation_type')) {
     redirect(root_url() . '/' . APPDIRNAME . '/home.php');
 }
 
 //Set Document Title
-$document->setTitle("Reason of Turnover");
+$document->setTitle("Resignation Type(s)");
 //ADD BODY CLASS
 $document->setBodyClass('');
 
 //Add Script and Style
-$document->addScript('../assets/app/js/Controller/ReasonOfTurnoverController.js?v=1');
+$document->addScript('../assets/app/js/Controller/ResignationTypeController.js?v=1');
 
 //Include Header and Footer
 include realpath(__DIR__ . '/../') . '/_inc/template/partial/header.php';
@@ -37,7 +37,7 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                     <h1 class="m-0"><?php echo $title ?></h1>
                 </div>
                 <div class="col-sm-6">
-                    <?php if (user_role_id() == 1 || has_permission(1, 'create_reason_of_turnover')): ?>
+                    <?php if (user_role_id() == 1 || has_permission(1, 'create_resignation_type')): ?>
                         <div class="float-right">
                             <button class="btn btn-info btn-sm create-new" style="display: inline-block;"
                                 data-bs-toggle="tooltip" data-bs-title="Create New"><span class="fa fa-plus"></span> Create
@@ -62,8 +62,8 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                     <div class="card-body">
                         <?php
                             $hide_colums = "";
-                            if (user_role_id() != 1 && !has_permission(1, 'modify_reason_of_turnover')) {
-                                $hide_colums .= "4,";
+                            if (user_role_id() != 1 && !has_permission(1, 'modify_resignation_type')) {
+                                $hide_colums .= "3,";
                             }
                         ?>
                         <!-- Form List Start -->
@@ -72,7 +72,6 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
                                 <tr>
                                     <th>ID</th>
                                     <th>Resignation Type</th>
-                                    <th>Reason</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -89,3 +88,4 @@ include realpath(__DIR__ . '/../') . '/_inc/template/partial/sidebar.php';
 </div>
 <!-- Content Wrapper End -->
 <?php include realpath(__DIR__ . '/../') . '/_inc/template/partial/footer.php'; ?>
+

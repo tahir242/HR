@@ -1,9 +1,3 @@
-<?php
-$Location_ID = $request->get['Location_ID'];
-$location = $model->getLocation($Location_ID);
-
-$locations = $model->getLocations(); 
-?>
 <form id="form-delete" action="location.php" method="post">
     <input type="hidden" name="action_type" value="DELETE">
     <input type="hidden" name="Location_ID" value="<?php echo $Location_ID; ?>">

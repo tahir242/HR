@@ -35,6 +35,7 @@ $scripts = $document->getScripts();
   <!-- Datatables -->
   <link href="../assets/datatables/datatables.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/select2/css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap4.min.css" rel="stylesheet" type="text/css">
   <!-- Add Runtime CSS -->
   <?php foreach ($styles as $style): ?>
     <link type="text/css" href="<?php echo $style['href']; ?>" rel="<?php echo $style['rel']; ?>"
@@ -44,7 +45,7 @@ $scripts = $document->getScripts();
   <link rel="stylesheet" href="../assets/app/css/adminlte.css">
   <!-- Responsive CSS -->
   <link href="../assets/app/css/responsive.css" type="text/css" rel="stylesheet">
-  <script disable-devtool-auto src='../assets/app/js/disable-devtools.js'></script>
+  <!-- <script disable-devtool-auto src='../assets/app/js/disable-devtools.js'></script> -->
   <!-- JavaScript Variables -->
   <script type="text/javascript">
     var baseUrl = "<?php echo root_url(); ?>";

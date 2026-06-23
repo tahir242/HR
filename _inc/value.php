@@ -45,3 +45,20 @@ if ($request->server['REQUEST_METHOD'] == 'GET' && isset($request->get['action_t
     exit();
   }
 }
+if ($request->server['REQUEST_METHOD'] == 'GET' && isset($request->get['action_type']) && $request->get['action_type'] == 'GET_REASON_BY_TYPE')
+{
+  try {
+    $resignation_type_id = $request->get['Resignation_Type_ID'];
+    $stmt = "SELECT Reason_ID, Reason FROM Reason_of_Turnover WHERE Resignation_Type_ID = ? AND Active = 1 ORDER BY Reason";
+    $results = db()->get_results($stmt, [$resignation_type_id]);
+
+    header('Content-Type: application/json');
+    echo json_encode(array('valid' => true, 'results' => $results ? $results : []));
+    exit();
+  } catch (Exception $e) { 
+    header('HTTP/1.1 422 Unprocessable Entity');
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode(array('errorMsg' => $e->getMessage()));
+    exit();
+  }
+}

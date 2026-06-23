@@ -3133,6 +3133,19 @@ let openModal = function ($scope) {
   axios.get($scope.url)
     .then(response => {
       $(".rawHtml").html(response.data);
+      setTimeout(function() {
+          document.querySelectorAll('.modal .tom-select').forEach((el)=>{
+              if(!el.tomselect) {
+                  new TomSelect(el, {
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              }
+          });
+      }, 100);
     }).catch(error => {
       if (error.response && error.response.data && error.response.data.errorMsg) {
           window.swal.fire({
