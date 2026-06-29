@@ -79,6 +79,49 @@ function autocomplete(inp) {
     });
 }
 
+function initializeTurnoverReasonFields(root) {
+    var rtSelectEl = root.querySelector('#Resignation_Type');
+    var rotSelectEl = root.querySelector('#Reason_of_Turnover');
+
+    if (!rtSelectEl || !rotSelectEl || !rtSelectEl.tomselect || !rotSelectEl.tomselect) {
+        return;
+    }
+
+    var loadReasons = function(value, selectedReason) {
+        var rot = rotSelectEl.tomselect;
+        rot.clear(true);
+        rot.clearOptions();
+        rot.addOption({ value: '', text: 'Select Reason' });
+
+        if (!value) {
+            rot.setValue('', true);
+            return;
+        }
+
+        axios.get(window.baseUrl + "/_inc/value.php?action_type=GET_REASON_BY_TYPE&Resignation_Type_ID=" + value)
+            .then(function(response) {
+                if (response.data.valid && response.data.results) {
+                    response.data.results.forEach(function(item) {
+                        rot.addOption({ value: item.Reason_ID, text: item.Reason });
+                    });
+                    rot.refreshOptions(false);
+                    if (selectedReason) {
+                        rot.setValue(selectedReason, true);
+                    }
+                }
+            }).catch(function(error) {
+                console.error('Error fetching reasons:', error);
+            });
+    };
+
+    rtSelectEl.tomselect.on('change', function(value) {
+        rotSelectEl.dataset.selectedValue = '';
+        loadReasons(value, '');
+    });
+
+    loadReasons(rtSelectEl.tomselect.getValue(), rotSelectEl.dataset.selectedValue || rotSelectEl.value);
+}
+
 function docReady(fn) {
     if (document.readyState === "complete" || document.readyState === "interactive") {
         setTimeout(fn, 1);
@@ -189,6 +232,19 @@ docReady(function () {
                     $("#search-field").hide();
                     $("#rawHtml1").html(content);
                     setTimeout(() => {
+                        document.querySelectorAll('#rawHtml1 .tom-select').forEach((el) => {
+                            if (!el.tomselect) {
+                                new TomSelect(el, {
+                                    create: false,
+                                    sortField: {
+                                        field: "text",
+                                        direction: "asc"
+                                    }
+                                });
+                            }
+                        });
+                        initializeTurnoverReasonFields(document.getElementById('rawHtml1'));
+
                         $(document).delegate("#missing-id", "click", function (e) {
                             e.stopPropagation();
                             e.preventDefault();
@@ -228,9 +284,6 @@ docReady(function () {
                                 $("#employee-name").text("");
                             }
                         });
-
-                        autocomplete(document.getElementById("Department"));
-                        autocomplete(document.getElementById("Designation"));
 
                         let formSubmittion = (form, url) => {
                             const formData = new FormData(form[0]);
@@ -339,7 +392,7 @@ docReady(function () {
                                 let focusedElement = document.activeElement;
                                 if (focusedElement.tabIndex >= 1) {
                                     event.preventDefault();
-                                    if (focusedElement.tabIndex === 6) {
+                                    if (focusedElement.tabIndex === 15) {
                                         document.getElementById('update-submit').click();
                                     } else {
                                         // Move focus to the next element

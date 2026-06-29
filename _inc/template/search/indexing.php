@@ -1,58 +1,44 @@
+<?php
+$dictModel = registry()->get('loader')->model('dictionary');
+$departments = $dictModel->getDepartments();
+$designations = $dictModel->getDesignations();
+$locations = registry()->get('loader')->model('location')->getLocations();
+$categories = registry()->get('loader')->model('employee_category')->getEmployeeCategories();
+$resTypes = registry()->get('loader')->model('resignation_type')->getResignationTypes();
+$reasons = registry()->get('loader')->model('reason_of_turnover')->getReasonOfTurnovers();
+
+$turnoverForm = [
+    'card_title' => 'Update Demographic',
+    'card_subtitle' => '',
+    'card_tools_html' => '<div class="card-tools pull-right"><a href="JavaScript:void(0);" class="btn btn-primary btn-xs search-button"><i class="fa-solid fa-arrows-rotate"></i> Searching Field(s)</a></div>',
+    'form_action' => 'indexing.php',
+    'hidden_inputs' => [
+        'Scan' => $scan,
+    ],
+    'show_missing_id' => true,
+    'include_file_upload' => false,
+    'submit_id' => 'update-submit',
+    'submit_name' => 'update-submit',
+    'submit_label' => 'Update',
+    'submit_tabindex' => 15,
+    'reset_tabindex' => 16,
+    'values' => [
+        'Employee_ID' => $emp->Employee_ID ?? '',
+        'Employee_Name' => $emp->Name ?? '',
+        'Gender' => $emp->Gender ?? '',
+        'Date_of_Birth' => !empty($emp->Date_of_Birth) ? date_normalizer($emp->Date_of_Birth, "d-m-Y") : '',
+        'Department' => $emp->Department ?? '',
+        'Designation' => $emp->Designation ?? '',
+        'Location' => $emp->Location ?? '',
+        'DOJ' => !empty($emp->Date_of_Joining) ? date_normalizer($emp->Date_of_Joining, "d-m-Y") : '',
+        'Date_of_Leaving' => !empty($emp->Date_of_Leaving) ? date_normalizer($emp->Date_of_Leaving, "d-m-Y") : '',
+        'Employee_Category' => $emp->Employee_Category ?? '',
+        'Resignation_Type' => $emp->Resignation_Type ?? '',
+        'Reason_of_Turnover' => $emp->Reason_of_Turnover ?? '',
+        'Remarks' => $emp->Remarks ?? '',
+    ],
+];
+?>
 <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">
-            <b>Update Demographic</b>
-        </h3>
-        <div class="card-tools pull-right">
-            <a href="JavaScript:void(0);" class="btn btn-primary btn-xs search-button"><i
-                    class="fa-solid fa-arrows-rotate"></i> Searching Field(s)</a>
-        </div>
-    </div>
-    <form id="create-form" action="indexing.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="action_type" value="CREATE">
-        <input type="hidden" name="Scan" value="<?php echo $scan ?>">
-        <div class="card-body">
-            <div class="form-group">
-                <label for="Employee_ID">Employee ID: <span style="color: red;">*</span></label> <button
-                    class="btn btn-sm btn-secondary p-1 float-right" id="missing-id">Missing ID</button>
-                <input type="text" name="Employee_ID" value="<?php echo $emp->Employee_ID ?>" class="form-control"
-                    id="Employee_ID" placeholder="Write Employee ID" tabindex="1" autofocus autocomplete="off">
-                <div class="error-message" id="employee-id"></div>
-            </div>
-            <div class="form-group">
-                <label for="Employee_Name">Employee Name: <span style="color: red;">*</span></label>
-                <input type="text" name="Employee_Name" value="<?php echo $emp->Name ?>" class="form-control"
-                    id="Employee_Name" placeholder="Write Employee Name" tabindex="2" required autocomplete="off">
-                <div class="error-message" id="employee-name"></div>
-            </div>
-            <div class="form-group search-box">
-                <label for="Department">Department:</label>
-                <div class="input-group autocomplete">
-                    <input type="text" placeholder="Write Employee Department"
-                        value="<?php echo get_the_department($emp->Department, "Department") ?>" tabindex="3"
-                        class="form-control" name="Department" id="Department">
-                </div>
-            </div>
-            <div class="form-group search-box">
-                <label for="Designation">Designation:</label>
-                <div class="input-group autocomplete">
-                    <input type="text" placeholder="Write Employee Designation"
-                        value="<?php echo get_the_designation($emp->Designation, "Designation") ?>" tabindex="4"
-                        class="form-control" name="Designation" id="Designation">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="DOJ">Date of Joining:</label>
-                <input type="text" name="DOJ" class="form-control" id="DOJ"
-                    value="<?php echo date_normalizer($emp->Date_of_Joining, "d-m-Y") ?>" placeholder="DD-MM-YYYY"
-                    tabindex="5" oninput="formatDate(this)" required>
-                <div class="error-message" id="employee-doj"></div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary" id="update-submit" data-datatable="#list" name="update-submit"
-                data-form="#create-form" data-loading-text="Saving..." tabindex="6">Update</button>
-            <button type="reset" id="reset" name="reset" class="btn btn-danger">Reset</button>
-        </div>
-    </form>
+    <?php include __DIR__ . '/../form/employee_turnover_form.php'; ?>
 </div>

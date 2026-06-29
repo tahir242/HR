@@ -127,109 +127,20 @@ $reasons = registry()->get('loader')->model('reason_of_turnover')->getReasonOfTu
             <form id="edit-form" enctype="multipart/form-data">
                 <input type="hidden" name="action_type" value="UPDATE">
                 <input type="hidden" name="Scan" id="edit_Scan">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Employee ID: <span style="color:red;">*</span></label>
-                            <input type="text" name="Employee_ID" class="form-control form-control-sm" id="edit_Employee_ID" readonly>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Employee Name: <span style="color:red;">*</span></label>
-                            <input type="text" name="Employee_Name" class="form-control form-control-sm" id="edit_Employee_Name">
-                            <div class="error-message" id="edit-employee-name"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Gender: <span style="color:red;">*</span></label>
-                            <select name="Gender" id="edit_Gender" class="form-control form-control-sm">
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Date of Birth: <span style="color:red;">*</span></label>
-                            <input type="text" name="Date_of_Birth" class="form-control form-control-sm" id="edit_Date_of_Birth" placeholder="DD-MM-YYYY" oninput="formatDate(this)">
-                            <div class="error-message" id="edit-employee-dob"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Department: <span style="color:red;">*</span></label>
-                            <select name="Department" id="edit_Department" class="form-control form-control-sm">
-                                <option value="">Select Department</option>
-                                <?php foreach ($departments as $dept): ?>
-                                    <option value="<?php echo $dept->Department_ID; ?>"><?php echo htmlspecialchars((string)$dept->Department); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Designation: <span style="color:red;">*</span></label>
-                            <select name="Designation" id="edit_Designation" class="form-control form-control-sm">
-                                <option value="">Select Designation</option>
-                                <?php foreach ($designations as $desig): ?>
-                                    <option value="<?php echo $desig->Designation_ID; ?>"><?php echo htmlspecialchars((string)$desig->Designation); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label style="font-size:14px">Location: <span style="color:red;">*</span></label>
-                            <select name="Location" id="edit_Location" class="form-control form-control-sm">
-                                <option value="">Select Location</option>
-                                <?php foreach ($locations as $loc): ?>
-                                    <option value="<?php echo $loc->Location_ID; ?>"><?php echo htmlspecialchars((string)$loc->Location); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Date of Joining: <span style="color:red;">*</span></label>
-                            <input type="text" name="DOJ" class="form-control form-control-sm" id="edit_DOJ" placeholder="DD-MM-YYYY" oninput="formatDate(this)">
-                            <div class="error-message" id="edit-employee-doj"></div>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Date of Leaving: <span style="color:red;">*</span></label>
-                            <input type="text" name="Date_of_Leaving" class="form-control form-control-sm" id="edit_Date_of_Leaving" placeholder="DD-MM-YYYY" oninput="formatDate(this)">
-                            <div class="error-message" id="edit-employee-dol"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label style="font-size:14px">Employee Category: <span style="color:red;">*</span></label>
-                            <select name="Employee_Category" id="edit_Employee_Category" class="form-control form-control-sm">
-                                <option value="">Select Category</option>
-                                <?php foreach ($categories as $cat): ?>
-                                    <option value="<?php echo $cat->Category_ID; ?>"><?php echo htmlspecialchars((string)$cat->Employee_Category); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Resignation Type: <span style="color:red;">*</span></label>
-                            <select name="Resignation_Type" id="edit_Resignation_Type" class="form-control form-control-sm">
-                                <option value="">Select Type</option>
-                                <?php foreach ($resTypes as $rt): ?>
-                                    <option value="<?php echo $rt->Resignation_Type_ID; ?>"><?php echo htmlspecialchars((string)$rt->Resignation_Type); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label style="font-size:14px">Reason of Turnover: <span style="color:red;">*</span></label>
-                            <select name="Reason_of_Turnover" id="edit_Reason_of_Turnover" class="form-control form-control-sm">
-                                <option value="">Select Reason</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label style="font-size:14px">Remarks:</label>
-                        <textarea name="Remarks" id="edit_Remarks" class="form-control form-control-sm" rows="3"></textarea>
-                    </div>
-                </div>
+                <?php
+                $turnoverForm = [
+                    'render_header' => false,
+                    'render_form' => false,
+                    'render_footer' => false,
+                    'body_class' => 'modal-body',
+                    'field_prefix' => 'edit_',
+                    'error_prefix' => 'edit-',
+                    'select_class' => 'form-control form-control-sm',
+                    'employee_id_readonly' => true,
+                    'include_file_upload' => false,
+                ];
+                include realpath(__DIR__ . '/../') . '/_inc/template/form/employee_turnover_form.php';
+                ?>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="update-submit">Update</button>
